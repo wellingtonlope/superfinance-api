@@ -21,7 +21,7 @@ func NewWallet(name, description string) (Wallet, error) {
 	return Wallet{ID: "", Name: name, Description: description}, nil
 }
 
-func (w *Wallet) UpdateWallet(name, description string) error {
+func (w *Wallet) Update(name, description string) error {
 	if name == "" {
 		return ErrWalletNameEmpty
 	}

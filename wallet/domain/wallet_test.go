@@ -51,7 +51,7 @@ func TestNewWallet(t *testing.T) {
 	}
 }
 
-func TestUpdateWallet(t *testing.T) {
+func TestWallet_Update(t *testing.T) {
 	testsCase := []struct {
 		name                string
 		expectedName        string
@@ -60,32 +60,28 @@ func TestUpdateWallet(t *testing.T) {
 		wallet              domain.Wallet
 	}{
 		{
-			"should update an wallet",
-			"wallet name updated",
-			"wallet description updated",
-			nil,
-			domain.Wallet{"1", "wallet name", "wallet description"},
+			name:                "should update an wallet",
+			expectedName:        "wallet name updated",
+			expectedDescription: "wallet description updated",
+			wallet:              domain.Wallet{ID: "1", Name: "wallet name", Description: "wallet description"},
 		},
 		{
-			"should update an wallet when description is empty",
-			"wallet name updated",
-			"",
-			nil,
-			domain.Wallet{"1", "wallet name", "wallet description"},
+			name:         "should update an wallet when description is empty",
+			expectedName: "wallet name updated",
+			wallet:       domain.Wallet{ID: "1", Name: "wallet name", Description: "wallet description"},
 		},
 		{
-			"shouldn't update an wallet when name is empty",
-			"",
-			"wallet description updated",
-			domain.ErrWalletNameEmpty,
-			domain.Wallet{"1", "wallet name", "wallet description"},
+			name:                "shouldn't update an wallet when name is empty",
+			expectedDescription: "wallet description updated",
+			expectedError:       domain.ErrWalletNameEmpty,
+			wallet:              domain.Wallet{ID: "1", Name: "wallet name", Description: "wallet description"},
 		},
 	}
 
 	for _, test := range testsCase {
 		t.Run(test.name, func(t *testing.T) {
 			walletBeforeUpdate := test.wallet
-			err := test.wallet.UpdateWallet(test.expectedName, test.expectedDescription)
+			err := test.wallet.Update(test.expectedName, test.expectedDescription)
 
 			if err != nil {
 				assert.Equal(t, domain.ErrWalletNameEmpty, err)

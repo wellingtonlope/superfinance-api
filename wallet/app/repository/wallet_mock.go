@@ -26,3 +26,16 @@ func (m *WalletMock) Update(wallet domain.Wallet) (domain.Wallet, error) {
 	}
 	return result, args.Error(1)
 }
+
+func (m *WalletMock) GetByID(id string) (domain.Wallet, error) {
+	args := m.Called(id)
+	var result domain.Wallet
+	if args.Get(0) != nil {
+		result = args.Get(0).(domain.Wallet)
+	}
+	return result, args.Error(1)
+}
+
+func NewWalletMock() *WalletMock {
+	return new(WalletMock)
+}
